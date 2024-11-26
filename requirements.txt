@@ -1,0 +1,5 @@
+cryptography==41.0.7
+pywin32==306
+tkinter  # Python 기본 패키지
+pyinstaller==6.3.0  # EXE 빌드용
+Pillow==10.1.0  # 이미지 변환용
