@@ -68,6 +68,53 @@ Windows 환경에서 특정 폴더에 대한 접근을 제한하고 비밀번호
 - 실패 시 자동 롤백 메커니즘 구현
 - 상세한 오류 로깅 및 사용자 피드백 제공
 
+## 유틸리티 도구
+
+프로젝트의 `utils` 폴더에는 다음과 같은 유용한 도구들이 포함되어 있습니다:
+
+### 1. 프로젝트 백업 (`backup.py`)
+- 프로젝트 전체를 ZIP 파일로 압축하여 백업
+- 백업 파일은 `versions` 폴더에 저장
+- 파일명 형식: `backup_YYYYMMDD_HHMMSS.zip`
+- 불필요한 파일 제외 (versions, __pycache__, .git, .env)
+
+### 2. 아이콘 변환기 (`icon_converter.py`)
+- WEBP 이미지를 ICO 파일로 변환
+- 다양한 크기의 아이콘 생성 (16x16, 32x32, 48x48, 256x256)
+- 투명도(RGBA) 지원
+- EXE 파일용 아이콘 생성
+
+### 3. EXE 빌드 도구 (`build_exe.py`)
+- PyInstaller를 사용하여 실행 파일 생성
+- 관리자 권한 요청 자동 설정
+- 아이콘 자동 변환 및 적용
+- 콘솔 창 숨김 처리
+
+### 4. GitHub 업로드 도구 (`git_upload.py`)
+- GitHub 레포지토리 자동 생성 및 코드 업로드
+- 환경 변수를 통한 토큰 관리 (.env 파일 사용)
+- 기존 레포지토리 확인 및 덮어쓰기 지원
+- 타임스탬프가 포함된 커밋 메시지 자동 생성
+
+## 환경 설정
+
+### 1. 필수 패키지 설치
+```bash
+pip install -r requirements.txt
+```
+
+### 2. GitHub 업로드 설정
+1. `.env` 파일 생성 및 다음 내용 추가:
+```
+PROJECT_NAME=folder-locker
+GITHUB_TOKEN=your_github_token
+```
+2. GitHub 토큰 생성:
+   - GitHub.com -> Settings -> Developer settings -> Personal access tokens
+   - 'Generate new token' 클릭
+   - 'repo' 권한 체크
+   - 생성된 토큰을 .env 파일에 입력
+
 ## 주요 기능
 
 - 폴더 잠금/잠금 해제
@@ -107,10 +154,7 @@ Windows 환경에서 특정 폴더에 대한 접근을 제한하고 비밀번호
 3. 잠금 해제 시 사용할 비밀번호를 반드시 기억해두세요.
 4. 폴더 잠금 전에 중요 데이터는 백업을 권장합니다.
 
-cryptography==41.0.7
-pywin32==306
-tkinter  # Python 기본 패키지
-pyinstaller==6.3.0  # EXE 빌드용## 설치 방법
+## 설치 방법
 
 1. 필요한 패키지 설치:
 ```bash

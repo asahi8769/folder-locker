@@ -3,3 +3,5 @@ pywin32==306
 tkinter  # Python 기본 패키지
 pyinstaller==6.3.0  # EXE 빌드용
 Pillow==10.1.0  # 이미지 변환용
+requests==2.31.0  # GitHub API 통신용
+python-dotenv==1.0.0  # 환경 변수 관리용
