@@ -3,6 +3,7 @@ import requests
 import subprocess
 import json
 from dotenv import load_dotenv
+from datetime import datetime
 
 def check_repo_exists(token, repo_name):
     """GitHub API를 사용하여 레포지토리 존재 여부 확인"""
@@ -22,7 +23,7 @@ def check_repo_exists(token, repo_name):
     else:
         raise Exception("Failed to check repository existence")
 
-def create_github_repo(token, repo_name, description="Folder Locker Project"):
+def create_github_repo(token, repo_name, description):
     """GitHub API를 사용하여 새 레포지토리 생성"""
     headers = {
         "Authorization": f"token {token}",
@@ -53,9 +54,20 @@ def get_repo_url(token, repo_name):
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github.v3+json"
     }
+
+    user_response = requests.get(
+        "https://api.github.com/user",
+        headers=headers
+    )
+    
+    if user_response.status_code != 200:
+        raise Exception("Failed to get user information")
+        
+    username = user_response.json()["login"]
+
     
     response = requests.get(
-        f"https://api.github.com/repos/{repo_name}",
+        f"https://api.github.com/repos/{username}/{repo_name}",
         headers=headers
     )
     
@@ -98,10 +110,14 @@ def upload_to_github():
         else:
             # 새 레포지토리 생성
             repo_url = create_github_repo(token, repo_name)
+
+        # 현재 시간을 포함한 커밋 메시지 생성
+        timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+        commit_message = f"Upload: {timestamp}"
         
         # Git 커밋 및 푸시
         subprocess.run(["git", "add", "."], check=True)
-        subprocess.run(["git", "commit", "-m", "Initial commit: Folder Locker Project"], check=True)
+        subprocess.run(["git", "commit", "-m", commit_message], check=True)
         subprocess.run(["git", "branch", "-M", "master"], check=True)
         
         # remote 확인 및 설정
